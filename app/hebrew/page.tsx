@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import Link from 'next/link';
 import { motion, AnimatePresence } from 'framer-motion'
 import Cookies from 'js-cookie';
@@ -24,6 +24,8 @@ export default function Home() {
   const [isLoaded, setIsLoaded] = useState(false);
 
   const [currentWordIndex, setCurrentWordIndex] = useState("");
+
+  const wordIndexRef = useRef(currentWordIndex);
 
   const KEYBOARD_ROWS = [
     ['ק', 'ר', 'א', 'ט', 'ו', 'ן', 'ם', 'פ', '⌫'],
@@ -197,8 +199,6 @@ export default function Home() {
     const timer = setInterval(() => {
       setTimeLeft((prev) => {
         if (prev <= 0) {
-          // When the timer hits 0, don't just stay at 0. 
-          // Trigger a re-fetch to get the NEW word index from the server.
           checkForNewWord(); 
           return 0;
         }
@@ -207,7 +207,11 @@ export default function Home() {
     }, 1000);
 
     return () => clearInterval(timer);
-  }, [currentWordIndex]); // Re-run if index changes
+  }, []);
+
+  useEffect(() => {
+    wordIndexRef.current = currentWordIndex;
+  }, [currentWordIndex]);
 
   useEffect(() => {
     if (!isLoaded) return;
