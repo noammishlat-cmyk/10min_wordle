@@ -1,7 +1,6 @@
 from fastapi import FastAPI
 from fastapi.middleware.cors import CORSMiddleware
 import uvicorn
-import requests
 from datetime import datetime
 import math
 import random
@@ -48,7 +47,7 @@ def load_words_heb():
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["*"], # For testing, allow everything
+    allow_origins=["https://10min-wordle.vercel.app/", "http://localhost:3000"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
