@@ -196,20 +196,6 @@ export default function Home() {
   };
 
   useEffect(() => {
-    const timer = setInterval(() => {
-      setTimeLeft((prev) => {
-        if (prev <= 0) {
-          checkForNewWord(); 
-          return 0;
-        }
-        return prev - 1;
-      });
-    }, 1000);
-
-    return () => clearInterval(timer);
-  }, []);
-
-  useEffect(() => {
     wordIndexRef.current = currentWordIndex;
   }, [currentWordIndex]);
 
@@ -243,7 +229,7 @@ export default function Home() {
     // Internal countdown
     const timer = setInterval(() => {
       setTimeLeft((prev) => {
-        if (prev <= 0) {
+        if (prev <= 1) {
           syncWithServer(); // If timer hits 0 while looking at it, double check server
           return 0;
         }
@@ -257,18 +243,6 @@ export default function Home() {
       document.removeEventListener("visibilitychange", handleVisibilityChange);
     };
   }, [isLoaded, currentWordIndex, apiUrl]);
-
-  useEffect(() => {
-    if (timeLeft === 0) {
-      Cookies.remove('save_data_heb');
-
-      const reloadTimeout = setTimeout(() => {
-        window.location.reload();
-      }, 1000);
-
-      return () => clearTimeout(reloadTimeout);
-    }
-  }, [timeLeft]);
 
 
 
