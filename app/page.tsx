@@ -186,10 +186,6 @@ export default function Home() {
   };
 
   useEffect(() => {
-    wordIndexRef.current = currentWordIndex;
-  }, [currentWordIndex]);
-
-  useEffect(() => {
     if (!isLoaded) return;
 
     const syncWithServer = async () => {
